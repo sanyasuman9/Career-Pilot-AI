@@ -115,7 +115,7 @@ career-pilot-ai/
 
 ---
 
-# ⚙️ Run Locally (Optional)
+# ⚙️ To Run Locally
 
 ## 1. Clone repo
 
