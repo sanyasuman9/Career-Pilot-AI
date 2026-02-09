@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Pilot — AI Roadmaps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --gold:#d4a45f;
+      --glass:rgba(255,255,255,0.08);
+      --border:rgba(255,255,255,0.15);
+    }
+
+    body {
+      margin:0;
+      font-family:Poppins,sans-serif;
+      background:linear-gradient(135deg,#081833,#102a54,#081833);
+      color:white;
+    }
+
+    nav {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:18px 50px;
+      background:rgba(10,20,45,.95);
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .brand {
+      font-family:'Playfair Display',serif;
+      font-size:1.8rem;
+      font-weight:700;
+      cursor:pointer;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .brand i { color:var(--gold); }
+
+    .nav-links {
+      display:flex;
+      gap:35px;
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+
+    .nav-links li {
+      cursor:pointer;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      color:#ddd;
+    }
+
+    .nav-links li.active,
+    .nav-links li:hover { color:var(--gold); }
+
+    .profile {
+      width:38px;height:38px;border-radius:50%;
+      background:linear-gradient(135deg,#d4a45f,#f0c27b);
+      display:flex;align-items:center;justify-content:center;
+      color:#081833;font-weight:600;
+    }
+
+    .hero {
+      text-align:center;
+      padding:55px 20px 20px;
+    }
+
+    .hero span { color:var(--gold); }
+
+    .input-card {
+      max-width:700px;
+      margin:25px auto 35px;
+      padding:20px;
+      background:var(--glass);
+      border:1px solid var(--border);
+      border-radius:16px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .input-card input,
+    .input-card select {
+      padding:12px;
+      border-radius:10px;
+      border:none;
+    }
+
+    .input-card button {
+      grid-column:span 2;
+      padding:12px;
+      background:linear-gradient(135deg,#d4a45f,#f0c27b);
+      border:none;
+      font-weight:600;
+      cursor:pointer;
+    }
+
+    .container {
+      max-width:1100px;
+      margin:auto;
+      padding:0 20px 40px;
+    }
+
+    .summary {
+      display:none;
+      background:var(--glass);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:18px;
+      margin-bottom:22px;
+    }
+
+    .progress-bar {
+      height:10px;
+      background:rgba(255,255,255,.15);
+      border-radius:8px;
+      overflow:hidden;
+      margin-top:10px;
+    }
+
+    .progress-fill {
+      height:100%;
+      width:0%;
+      background:linear-gradient(135deg,#d4a45f,#f0c27b);
+      transition:.4s;
+    }
+
+    .phase {
+      background:var(--glass);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:16px;
+      margin-bottom:16px;
+    }
+
+    .task {
+      display:flex;
+      gap:10px;
+      margin:6px 0;
+    }
+
+    input[type="checkbox"] {
+      accent-color:var(--gold);
+      transform:scale(1.1);
+    }
+  </style>
+</head>
+
+<body>
+
+<nav>
+  <div class="brand" onclick="location.href='index.html'">
+    <i class="fas fa-compass"></i> Career Pilot
+  </div>
+
+  <ul class="nav-links">
+    <li onclick="location.href='chatbot.html'"><i class="fas fa-robot"></i> AI Chatbot</li>
+    <li class="active"><i class="fas fa-project-diagram"></i> Roadmaps</li>
+    <li onclick="location.href='courses.html'"><i class="fas fa-book-open"></i> Courses</li>
+  </ul>
+
+  <div class="profile">S</div>
+</nav>
+
+<section class="hero">
+  <h1>Create Your <span>Learning Roadmap</span></h1>
+  <p>Personalized • Structured • Trackable</p>
+</section>
+
+<div class="input-card">
+  <input id="career" placeholder="Choose a Career">
+  <select id="level">
+    <option>Beginner</option>
+    <option>Intermediate</option>
+    <option>Advanced</option>
+  </select>
+  <button onclick="generateRoadmap()">Generate Roadmap</button>
+</div>
+
+<div class="container">
+  <div class="summary" id="summary">
+    <h3 id="title"></h3>
+    <p id="duration"></p>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <div id="timeline"></div>
+</div>
+
+<script>
+let total = 0, done = 0;
+
+async function generateRoadmap() {
+  const career = careerInput.value.trim();
+  const level = levelInput.value;
+
+  if (!career) return alert("Enter a career");
+
+  timeline.innerText = "Generating roadmap...";
+
+  const res = await fetch("https://career-pilot-backend-f9nh.onrender.com/generate-roadmap", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ career, level })
+  });
+
+  const data = await res.json();
+  render(data);
+}
+
+function render(data) {
+  summary.style.display = "block";
+  title.innerText = data.career;
+  duration.innerText = "Estimated duration: " + data.total_duration;
+
+  timeline.innerHTML = "";
+  total = done = 0;
+
+  data.phases.forEach((p, i) => {
+    const div = document.createElement("div");
+    div.className = "phase";
+
+    let tasks = "";
+    p.tasks.forEach(t => {
+      total++;
+      tasks += `
+        <div class="task">
+          <input type="checkbox" onchange="toggle(this)">
+          <span>${t}</span>
+        </div>`;
+    });
+
+    div.innerHTML = `
+      <h4>Phase ${i + 1} — ${p.name}</h4>
+      <div style="opacity:.75;font-size:12px">${p.duration}</div>
+      ${tasks}
+    `;
+    timeline.appendChild(div);
+  });
+
+  update();
+}
+
+function toggle(cb) {
+  done += cb.checked ? 1 : -1;
+  update();
+}
+
+function update() {
+  progressFill.style.width = total ? Math.round((done / total) * 100) + "%" : "0%";
+}
+
+const careerInput = document.getElementById("career");
+const levelInput = document.getElementById("level");
+const summary = document.getElementById("summary");
+const title = document.getElementById("title");
+const duration = document.getElementById("duration");
+const timeline = document.getElementById("timeline");
+const progressFill = document.getElementById("progressFill");
+</script>
+
+</body>
+</html>

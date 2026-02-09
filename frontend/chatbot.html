@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Pilot | AI Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #081833, #102a54, #081833);
+      color: white;
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 50px;
+      background: rgba(10, 20, 45, 0.95);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      gap: 10px;
+      cursor: pointer;
+      align-items: center;
+    }
+
+    .brand i { color: #d4a45f; }
+
+    .nav-links {
+      display: flex;
+      gap: 35px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      cursor: pointer;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      opacity: 0.85;
+    }
+
+    .nav-links li.active,
+    .nav-links li:hover {
+      color: #d4a45f;
+      opacity: 1;
+    }
+
+    .profile {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d4a45f, #f0c27b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #081833;
+      font-weight: 600;
+    }
+
+    /* CHAT */
+    .page {
+      display: flex;
+      justify-content: center;
+      padding: 30px 20px;
+    }
+
+    .chat-wrapper {
+      width: 100%;
+      max-width: 1100px;
+      height: calc(100vh - 160px);
+      background: rgba(255,255,255,0.06);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px;
+      background: rgba(8, 24, 51, 0.65);
+      border-radius: 16px;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .bot {
+      background: #d4a45f;
+      color: #081833;
+    }
+
+    .user {
+      background: #3559a8;
+      margin-left: auto;
+    }
+
+    .actions {
+      display: flex;
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .actions button {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .resume-btn {
+      background: #3559a8;
+      color: white;
+    }
+
+    .quiz-btn {
+      background: linear-gradient(135deg, #d4a45f, #f0c27b);
+      color: #081833;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 12px;
+    }
+
+    .input-area input {
+      flex: 1;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+    }
+
+    .input-area button {
+      padding: 14px 30px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #d4a45f, #f0c27b);
+      color: #081833;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .upload-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="brand" onclick="location.href='index.html'">
+    <i class="fas fa-compass"></i> Career Pilot
+  </div>
+
+  <ul class="nav-links">
+    <li class="active"><i class="fas fa-robot"></i> AI Chatbot</li>
+    <li onclick="location.href='roadmap.html'"><i class="fas fa-project-diagram"></i> Roadmaps</li>
+    <li onclick="location.href='courses.html'"><i class="fas fa-book-open"></i> Courses</li>
+  </ul>
+
+  <div class="profile">S</div>
+</nav>
+
+<!-- CHAT -->
+<div class="page">
+  <div class="chat-wrapper">
+
+    <div id="chatBox" class="chat-box"></div>
+
+    <div class="actions" id="actionArea">
+      <button class="resume-btn" onclick="showUpload()">Upload Resume</button>
+      <button class="quiz-btn" onclick="startQuiz()">Quick Quiz</button>
+    </div>
+
+    <div class="input-area">
+      <input id="userInput" placeholder="Ask about careers, skills, or guidance...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const chatBox = document.getElementById("chatBox");
+const actionArea = document.getElementById("actionArea");
+const input = document.getElementById("userInput");
+
+/* ================= CORE ================= */
+
+function addMessage(sender, text, id=null) {
+  const div = document.createElement("div");
+  div.className = `message ${sender}`;
+  div.innerText = text;
+  if (id) div.id = id;
+  chatBox.appendChild(div);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+addMessage(
+  "bot",
+  "Hello! I’m Career Pilot AI 👋\n\n" +
+  "• Ask career-related questions\n" +
+  "• Upload your resume for analysis\n" +
+  "• Take a quick career quiz"
+);
+
+/* ================= MODES ================= */
+
+let mode = "chat"; // chat | quiz
+let quizStep = 0;
+const quizAnswers = [];
+
+const quizQuestions = [
+  "What is your highest level of education?",
+  "Which subjects or skills interest you the most?",
+  "Do you prefer technical, creative, or people-focused work?",
+  "What is your primary career goal right now?"
+];
+
+/* ================= SEND ================= */
+
+function sendMessage() {
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  addMessage("user", msg);
+  input.value = "";
+
+  if (mode === "quiz") {
+    handleQuizAnswer(msg);
+    return;
+  }
+
+  addMessage("bot", "Thinking...", "thinking");
+
+  fetch("https://career-pilot-backend-f9nh.onrender.com/api/chat", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message: msg })
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("thinking").remove();
+    addMessage("bot", data.reply);
+  })
+  .catch(() => {
+    document.getElementById("thinking").remove();
+    addMessage("bot", "Backend not responding.");
+  });
+}
+
+/* ================= RESUME ================= */
+
+function showUpload() {
+  mode = "chat";
+  actionArea.innerHTML = `
+    <div class="upload-box">
+      <input type="file" id="resumeFile" accept=".pdf,.docx">
+      <button onclick="uploadResume()">Upload</button>
+    </div>
+  `;
+  addMessage("bot", "Upload your resume (PDF/DOCX) for AI analysis.");
+}
+
+function uploadResume() {
+  const fileInput = document.getElementById("resumeFile");
+  if (!fileInput || !fileInput.files.length) return alert("Select a file");
+
+  const formData = new FormData();
+  formData.append("file", fileInput.files[0]);
+
+  addMessage("bot", "Analyzing resume...", "thinking");
+
+  fetch("https://career-pilot-backend-f9nh.onrender.com/api/resume/upload", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("thinking").remove();
+    addMessage("bot", data.result);
+  })
+  .catch(() => {
+    document.getElementById("thinking").remove();
+    addMessage("bot", "Resume analysis failed.");
+  });
+}
+
+/* ================= QUIZ ================= */
+
+function startQuiz() {
+  mode = "quiz";
+  quizStep = 0;
+  quizAnswers.length = 0;
+
+  addMessage(
+    "bot",
+    "🧠 Quick Career Quiz\n\nAnswer a few questions to help us understand you."
+  );
+
+  setTimeout(() => {
+    addMessage("bot", quizQuestions[quizStep]);
+  }, 500);
+}
+
+function handleQuizAnswer(answer) {
+  quizAnswers.push(answer);
+  quizStep++;
+
+  if (quizStep < quizQuestions.length) {
+    addMessage("bot", quizQuestions[quizStep]);
+  } else {
+    mode = "chat";
+    addMessage(
+      "bot",
+      "✅ Quiz Completed!\n\n" +
+      "Our backend can now:\n" +
+      "• Recommend careers\n" +
+      "• Identify skill gaps\n" +
+      "• Create a learning roadmap\n\n" +
+      "For this demo, analysis is handled securely on the backend."
+    );
+  }
+}
+</script>
+
+</body>
+</html>

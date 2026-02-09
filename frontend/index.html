@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Career Pilot | AI Career Guidance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #081833, #102a54, #081833);
+      color: #ffffff;
+      min-height: 100vh;
+    }
+
+    /* NAVBAR (SOURCE OF TRUTH) */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 50px;
+      background-color: rgba(10, 20, 45, 0.95);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .brand i {
+      color: #d4a45f;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 35px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links li {
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.85;
+      transition: opacity 0.2s, color 0.2s;
+    }
+
+    .nav-links li i {
+      color: #d4a45f;
+    }
+
+    .nav-links li:hover {
+      opacity: 1;
+      color: #d4a45f;
+    }
+
+    .profile-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d4a45f, #f0c27b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #081833;
+      font-weight: 600;
+    }
+
+    /* HERO */
+    .hero {
+      text-align: center;
+      padding: 110px 20px 80px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.2rem;
+      margin-bottom: 12px;
+    }
+
+    .hero h2 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: #d4a45f;
+      margin-bottom: 28px;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      opacity: 0.85;
+      margin-bottom: 45px;
+    }
+
+    .hero button {
+      background: linear-gradient(135deg, #d4a45f, #f0c27b);
+      border: none;
+      padding: 15px 40px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #081833;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 18px rgba(212,164,95,0.35);
+    }
+
+    .hero button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 26px rgba(212,164,95,0.5);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="brand" onclick="window.location.href='index.html'">
+    <i class="fas fa-compass"></i> Career Pilot
+  </div>
+
+  <ul class="nav-links">
+    <li onclick="window.location.href='chatbot.html'">
+      <i class="fas fa-robot"></i> AI Chatbot
+    </li>
+    <li onclick="window.location.href='roadmap.html'">
+      <i class="fas fa-project-diagram"></i> Roadmaps
+    </li>
+    <li onclick="window.location.href='courses.html'">
+      <i class="fas fa-book-open"></i> Courses
+    </li>
+  </ul>
+
+  <div class="profile-btn">S</div>
+</nav>
+
+<!-- HERO SECTION -->
+<section class="hero">
+  <h1>Career Pilot</h1>
+  <h2>AI-Powered Career Guidance</h2>
+
+  <p>
+    Career Pilot helps students and early professionals navigate career decisions
+    with AI-driven insights, structured learning roadmaps, and curated resources —
+    all in one unified platform.
+  </p>
+
+  <button onclick="window.location.href='chatbot.html'">
+    Start with AI Guidance
+  </button>
+</section>
+
+</body>
+</html>
