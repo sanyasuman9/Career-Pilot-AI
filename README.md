@@ -186,6 +186,8 @@ This project was built with the belief that
 
 ---
 
+License: MIT © 2025 Sanya Suman
+
 # 🏁 Final Note for Reviewers
 
 This is a fully functional deployed prototype, not just a concept.
