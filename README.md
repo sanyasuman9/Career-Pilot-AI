@@ -197,4 +197,4 @@ It demonstrates how AI can be used responsibly for
 
 ---
 
-License: MIT © 2025 Sanya Suman
+License: MIT © 2026 Sanya Suman
