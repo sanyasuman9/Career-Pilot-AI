@@ -1,6 +1,6 @@
 🚀 Career Pilot AI
 
-### AI-Powered Career Guidance for Education, Inclusion & Empowerment
+### AI-Powered Career Guidance Platform
 
 *Guiding students from confusion to clarity through intelligent career support.*
 
